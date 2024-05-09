@@ -1,0 +1,38 @@
+form{
+    margin-top: 5px;
+}
+
+input{
+    width: 95%;
+}
+
+select{
+    width: 100%;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.botao{
+    height: 30px;
+    width: 100%;
+    background: none;
+    color: #4c89e3;
+    border: 2px solid #4c89e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.5s;
+}
+
+.botao:hover{
+    background-color: #4c89e3;
+    color: #fff;
+}
