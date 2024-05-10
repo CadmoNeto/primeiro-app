@@ -14,10 +14,11 @@ function RegistrarJogadores() {
     function handlePosicao(e){
         e.preventDefault();
 
-        let posicoes = ['Levantador', 'Ponteiro', 'Oposto', 'Central', 'Líbero'];
-        
-        if (e.target.value != ''){
-            setPosicao(posicoes[e.target.value]);
+        let pos = parseInt(e.target.value);
+        const posicoes = ['Levantador', 'Ponteiro', 'Oposto', 'Central', 'Líbero'];
+
+        if (e.target.value !== ''){
+            setPosicao(posicoes[pos]);
             console.log({posicao});
         }
     }
@@ -29,7 +30,6 @@ function RegistrarJogadores() {
             nome: nome,
             geral: geral
         })
-
     }
 
     return(
@@ -39,39 +39,47 @@ function RegistrarJogadores() {
             </header>
             <div className="container">
                 <form onSubmit={handlerSubmit}>
+                    <label><strong>Nome do Jogador:</strong></label>
                     <input
-                        placeholder="Nome" 
                         value={nome}
                         onChange={(e) => setNome(e.target.value)}
                     /><br/><br/>
 
+                    <label><strong>Nível de Recepção do Jogador:</strong></label>
                     <input
-                        placeholder="Recepção"
+                        placeholder="0 - 99"
                         value={recepcao}
                         onChange={(e) => setRecepcao(e.target.value)}
                     /><br/><br/>
 
+                    <label><strong>Nível de Levantamento do Jogador:</strong></label>
                     <input
-                        placeholder="Levantamento"
+                        placeholder="0 - 99"
                         value={levantamento}
                         onChange={(e) => setLevantamento(e.target.value)}
                     /><br/><br/>
 
+                    <label><strong>Nível de Ataque do Jogador:</strong></label>
                     <input
-                        placeholder="Ataque"
+                        placeholder="0 - 99"
                         value={ataque}
                         onChange={(e) => setAtaque(e.target.value)}
                     /><br/><br/>
 
+                    <label><strong>Nível de Bloqueio do Jogador:</strong></label>
                     <input
-                        placeholder="Bloqueio"
+                        placeholder="0 - 99"
                         value={bloqueio}
                         onChange={(e) => setBloqueio(e.target.value)}
                     /><br/><br/>
 
+                    <label><strong>Posição do Jogador:</strong></label>
                     <select
                         name="posicao"
-                        onChange={handlePosicao}
+                        onChange={(e) => {
+                            console.log(e.target.value);
+                            handlePosicao(e);
+                        }}
                     >
                         <option value={''}></option>
                         <option value={0}>Levantador</option>
