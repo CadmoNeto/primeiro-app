@@ -3,52 +3,57 @@ import "./RegistrarJogadores.css"
 
 function RegistrarJogadores() {
     const [nome, setNome] = useState('');
-    const [geral, setGeral] = useState();
-    const [recepcao, setRecepcao] = useState();
-    const [levantamento, setLevantamento] = useState();
-    const [ataque, setAtaque] = useState();
-    const [bloqueio, setBloqueio] = useState();
+    const [geral, setGeral] = useState('');
+    const [recepcao, setRecepcao] = useState('');
+    const [levantamento, setLevantamento] = useState('');
+    const [ataque, setAtaque] = useState('');
+    const [bloqueio, setBloqueio] = useState('');
     const [posicao, setPosicao] = useState('');
     const [jogador, setJogador] = useState({});
     const posicoes = ['Levantador', 'Ponteiro', 'Oposto', 'Central', 'Líbero'];
 
-    useEffect( () => {
+    useEffect(() => {
+        console.log(jogador);
+    }, [jogador]);
 
-        async function getGeral() {
-            let x = 0;
-
-            switch (posicao) {
-                case 'Levantador':
-                    x = ((recepcao * 2) + (levantamento * 5) + (ataque) + (bloqueio * 2)) / 10
-                    break;
-                case 'Ponteiro':
-                    x = ((recepcao * 3) + (levantamento * 2) + (ataque * 3) + (bloqueio * 2)) / 10
-                    break;
-                case 'Oposto':
-                    x = ((recepcao) + (levantamento) + (ataque * 6) + (bloqueio * 2)) / 10
-                    break;
-                case 'Central':
-                    x = ((recepcao) + (levantamento) + (ataque * 2) + (bloqueio * 6)) / 10
-                    break;
-                case 'Líbero':
-                    x = ((recepcao * 6) + (levantamento * 4)) / 10
-                    break;
-                default:
-                    break;
-            }
-            setGeral(x);
-        }
-
-        if (posicao){
+    useEffect(() => {
+        if (recepcao !== 0 && levantamento !== 0 && ataque !== 0 && bloqueio !== 0 && posicao !== '') {
             getGeral();
         }
+    }, [recepcao, levantamento, ataque, bloqueio, posicao]);
 
-    }, [recepcao, levantamento, ataque, bloqueio, posicao] )
+    function getGeral() {
+        let x = 0;
 
-    async function handlerSubmit(e) {
+        switch (posicao) {
+            case 'Levantador':
+                x = Math.round((recepcao * 2) + (levantamento * 5) + (ataque) + (bloqueio * 2)) / 10
+                break;
+            case 'Ponteiro':
+                x = Math.round((recepcao * 3) + (levantamento * 2) + (ataque * 3) + (bloqueio * 2)) / 10
+                break;
+            case 'Oposto':
+                x = Math.round((recepcao) + (levantamento) + (ataque * 6) + (bloqueio * 2)) / 10
+                break;
+            case 'Central':
+                x = Math.round((recepcao) + (levantamento) + (ataque * 2) + (bloqueio * 6)) / 10
+                break;
+            case 'Líbero':
+                x = Math.round((recepcao * 6) + (levantamento * 4)) / 10
+                break;
+            default:
+                break;
+        }
+        setGeral(x);
+    }
+
+    function handlerSubmit(e) {
         e.preventDefault();
 
-        await setJogador({
+        // getGeral();
+
+        setJogador(prevState => ({
+            ...prevState,
             nome: nome,
             geral: geral,
             recepcao: recepcao,
@@ -56,8 +61,7 @@ function RegistrarJogadores() {
             ataque: ataque,
             bloqueio: bloqueio,
             posicao: posicao
-        });
-        console.log(jogador)
+        }));
     }
 
     return(
@@ -70,7 +74,6 @@ function RegistrarJogadores() {
                     <label><strong>Nome do Jogador:</strong></label>
                     <input
                         required
-                        value={nome}
                         onChange={(e) => setNome(e.target.value)}
                     /><br/><br/>
 
@@ -78,42 +81,54 @@ function RegistrarJogadores() {
                     <input
                         required
                         placeholder="0 - 99"
+                        maxLength={2}
                         value={recepcao}
-                        onChange={(e) => setRecepcao(e.target.value)}
+                        onChange={(e) => {
+                            const valor = e.target.value.replace(/\D/g, '');
+                            setRecepcao(valor);
+                        }}
                     /><br/><br/>
 
                     <label><strong>Nível de Levantamento do Jogador:</strong></label>
                     <input
                         required
                         placeholder="0 - 99"
-                        value={levantamento}
-                        onChange={(e) => setLevantamento(e.target.value)}
+                        min={0}
+                        max={99}
+                        onChange={(e) => {
+                            const valor = e.target.value.replace(/\D/g, '');
+                            setLevantamento(e.target.value)
+                        }}
                     /><br/><br/>
 
                     <label><strong>Nível de Ataque do Jogador:</strong></label>
                     <input
                         required
                         placeholder="0 - 99"
-                        value={ataque}
-                        onChange={(e) => setAtaque(e.target.value)}
+                        min={0}
+                        max={99}
+                        onChange={(e) => {
+                            const valor = e.target.value.replace(/\D/g, '');
+                            setAtaque(e.target.value)
+                        }}
                     /><br/><br/>
 
                     <label><strong>Nível de Bloqueio do Jogador:</strong></label>
                     <input
                         required
                         placeholder="0 - 99"
-                        value={bloqueio}
-                        onChange={(e) => setBloqueio(e.target.value)}
+                        min={0}
+                        max={99}
+                        onChange={(e) => {
+                            const valor = e.target.value.replace(/\D/g, '');
+                            setBloqueio(e.target.value)
+                        }}
                     /><br/><br/>
 
                     <label><strong>Posição do Jogador:</strong></label>
                     <select
                         required
-                        name="posicao"
-                        onChange={(e) => {
-                            setPosicao(e.target.value);
-                            console.log({posicao})
-                        }}
+                        onChange={(e) => setPosicao(e.target.value)}
                     >
                         <option value={''}></option>
                         {posicoes.map((item, index) => {
